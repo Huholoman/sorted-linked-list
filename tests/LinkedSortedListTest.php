@@ -14,17 +14,16 @@ final class LinkedSortedListTest extends TestCase
      *
      * @dataProvider itCanCreateListFromValuesProvider
      */
-    public function testItCanCreateListFromArray(array $givenValues, int $expectedCount, array $expectedValues): void {
+    public function testItCanCreateListFromArray(array $givenValues, array $expectedValues): void {
         // when
         $list = LinkedSortedList::CreateFromArray($givenValues);
 
         // then
-        Assert::assertSame($expectedCount, $list->count());
+        Assert::assertSame(count($expectedValues), $list->count());
 
-        foreach ($expectedValues as $index => $expectedValue) {
-            $firstNode =  $list->get($index);
-            Assert::assertNotNull($firstNode);
-            Assert::assertSame($expectedValue, $firstNode->getValue());
+        foreach ($list->getIterator() as $index => $actualValue) {
+            $expectedValue = $expectedValues[$index];
+            Assert::assertSame($expectedValue, $actualValue);
         }
     }
 
@@ -36,12 +35,10 @@ final class LinkedSortedListTest extends TestCase
         return [
             "it can create list from integers" => [
                 [3, 2, 1],
-                3,
                 [1, 2, 3],
             ],
             "it can create list from strings" => [
                 ["ijkl", "efgh", "abcd"],
-                3,
                 ["abcd", "efgh", "ijkl"],
             ],
         ];
@@ -122,7 +119,6 @@ final class LinkedSortedListTest extends TestCase
     public function testItCanRemoveValue(
         array $givenValues,
         int|string $valueToAdd,
-        int $expectedCount,
         array $expectedValues,
     ): void {
         // given
@@ -132,11 +128,11 @@ final class LinkedSortedListTest extends TestCase
         $list->remove($valueToAdd);
 
         // then
-        Assert::assertSame($expectedCount, $list->count());
-        foreach ($expectedValues as $index => $expectedValue) {
-            $firstNode =  $list->get($index);
-            Assert::assertNotNull($firstNode);
-            Assert::assertSame($expectedValue, $firstNode->getValue());
+        Assert::assertSame(count($expectedValues), $list->count());
+
+        foreach ($list->getIterator() as $index => $actualValue) {
+            $expectedValue = $expectedValues[$index];
+            Assert::assertSame($expectedValue, $actualValue);
         }
     }
 
@@ -148,43 +144,36 @@ final class LinkedSortedListTest extends TestCase
             "it can remove last int value" => [
                 [1, 2, 3],
                 3,
-                2,
                 [1, 2],
             ],
             "it can remove string value" => [
                 ["a", "b", "c"],
                 "c",
-                2,
                 ["a", "b"],
             ],
             "it can remove first int value" => [
                 [1, 2, 3],
                 1,
-                2,
                 [2, 3]
             ],
             "it can remove first string value" => [
                 ["a", "b", "c"],
                 "a",
-                2,
                 ["b", "c"]
             ],
             "it can remove int value from the middle" => [
                 [1, 2, 3],
-                2,
                 2,
                 [1, 3],
             ],
             "it can remove string value in the middle" => [
                 ["a", "b", "c"],
                 "b",
-                2,
                 ["a", "c"],
             ],
             "it can remove first duplicist string value" => [
                 ["a", "a", "c"],
                 "a",
-                2,
                 ["a", "c"],
             ],
         ];
