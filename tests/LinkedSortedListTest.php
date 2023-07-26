@@ -21,10 +21,9 @@ final class LinkedSortedListTest extends TestCase
         // then
         Assert::assertSame($expectedCount, $list->count());
 
-        foreach ($expectedValues as $index => $expectedValue) {
-            $firstNode =  $list->get($index);
-            Assert::assertNotNull($firstNode);
-            Assert::assertSame($expectedValue, $firstNode->getValue());
+        foreach ($list->getIterator() as $index => $actualValue) {
+            $expectedValue = $expectedValues[$index];
+            Assert::assertSame($expectedValue, $actualValue);
         }
     }
 
@@ -133,10 +132,9 @@ final class LinkedSortedListTest extends TestCase
 
         // then
         Assert::assertSame($expectedCount, $list->count());
-        foreach ($expectedValues as $index => $expectedValue) {
-            $firstNode =  $list->get($index);
-            Assert::assertNotNull($firstNode);
-            Assert::assertSame($expectedValue, $firstNode->getValue());
+        foreach ($list->getIterator() as $index => $actualValue) {
+            $expectedValue = $expectedValues[$index];
+            Assert::assertSame($expectedValue, $actualValue);
         }
     }
 
